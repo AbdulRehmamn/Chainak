@@ -3,19 +3,19 @@ import React from 'react';
 const Gallery = () => {
   const images = [
     {
-      url: "/src/assets/images/1.png",
+      url: "/public/images/1.png",
       alt: "Chainak's cozy interior with warm wooden seating"
     },
     {
-      url: "/src/assets/images/2.png",
+      url: "/public/images/2.png",
       alt: "Modern cafe counter with vibrant blue and orange design"
     },
     {
-      url: "/src/assets/images/3.png",
+      url: "/public/images/3.png",
       alt: "Evening ambiance with string lights and outdoor seating"
     },
     {
-      url: "/src/assets/images/4.png",
+      url: "/public/images/4.png",
       alt: "Contemporary interior with blue lighting and modern decor"
     }
   ];
