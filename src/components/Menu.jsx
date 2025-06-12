@@ -6,7 +6,7 @@ const Menu = ({ onOrderClick }) => {
 
   const categories = [
     { id: 'tea', name: 'Traditional Tea', icon: '🍵' },
-    { id: 'coffee', name: 'Premium Coffee', icon: '☕' },
+    { id: 'coffee', name: 'Sandwiches', icon: '☕' },
     { id: 'food', name: 'Snacks & Food', icon: '🥪' },
     { id: 'cold', name: 'Cold Beverages', icon: '🧊' }
   ];
@@ -18,6 +18,7 @@ const Menu = ({ onOrderClick }) => {
       { name: 'Green Tea', price: 'Rs. 150', description: 'Fresh green tea with mint leaves', popular: false },
       { name: 'Masala Chai', price: 'Rs. 140', description: 'Spiced tea with traditional masala blend', popular: true },
       { name: 'Earl Grey', price: 'Rs. 160', description: 'Classic English tea with bergamot', popular: false },
+      { name: 'Lemon Tea', price: 'Rs. 130', description: 'Refreshing tea with fresh lemon and honey', popular: false },
       { name: 'Lemon Tea', price: 'Rs. 130', description: 'Refreshing tea with fresh lemon and honey', popular: false }
     ],
     coffee: [

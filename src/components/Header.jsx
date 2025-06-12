@@ -64,7 +64,7 @@ const Header = ({ onOrderClick }) => {
             </button>
             <button
               onClick={onOrderClick}
-              className="bg-amber-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-700 transform hover:scale-105 transition-all duration-300"
+              className="bg-amber-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-700 transform hover:scale-105 transition-all duration-300 "
             >
               Order Now
             </button>
@@ -101,12 +101,12 @@ const Header = ({ onOrderClick }) => {
                 <Phone className="h-4 w-4" />
                 <span>Call Now</span>
               </button>
-              <button
+              {/* <button
                 onClick={onOrderClick}
                 className="bg-amber-600 text-white px-4 py-2 rounded-full font-semibold hover:bg-amber-700 transition-colors"
               >
                 Order Now
-              </button>
+              </button> */}
             </div>
           </nav>
         </div>
