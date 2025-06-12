@@ -28,7 +28,7 @@ const Footer = () => {
                 Chainak
               </span>
             </div>
-            <p className="text-gray-300 mb-4">
+            <p className="text-white mb-4">
               Experience the authentic taste of traditional tea & coffee in the heart of Lahore. 
               Every cup tells a story of tradition and quality.
             </p>
@@ -62,7 +62,7 @@ const Footer = () => {
                 <li key={link}>
                   <button 
                     onClick={() => document.getElementById(link.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-gray-300 hover:text-amber-400 transition-colors duration-200"
+                    className="text-white hover:text-amber-400 transition-colors duration-200"
                   >
                     {link}
                   </button>
@@ -74,7 +74,7 @@ const Footer = () => {
           {/* Menu Categories */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Popular Items</h3>
-            <ul className="space-y-2 text-gray-300">
+            <ul className="space-y-2 text-white">
               <li>Desi Chai - Rs. 120</li>
               <li>Cappuccino - Rs. 250</li>
               <li>Kashmiri Chai - Rs. 180</li>
@@ -89,7 +89,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-amber-400 mt-0.5" />
-                <div className="text-gray-300">
+                <div className="text-white">
                   <p>F73R+266 Block C1</p>
                   <p>Phase 1 Johar Town</p>
                   <p>Lahore, Punjab</p>
@@ -97,18 +97,18 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-5 w-5 text-amber-400" />
-                <span className="text-gray-300">+92 337 7240303</span>
+                <span className="text-white">+92 337 7240303</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-5 w-5 text-amber-400" />
-                <span className="text-gray-300">info@chainak.lhr</span>
+                <span className="text-white">info@chainak.lhr</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-300">
+          <p className="text-white">
             © 2020 Chainak Café. All rights reserved. Made with ❤️ in Lahore.
           </p>
         </div>
