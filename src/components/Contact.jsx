@@ -9,13 +9,7 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
-    alert('Thank you for your message! We\'ll get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
+  const [formStatus, setFormStatus] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -24,8 +18,47 @@ const Contact = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      access_key: "52aec47f-fa76-40c4-a2ee-f2d737e11079", // Your Web3Forms access key
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit",  {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setFormStatus("Thank you! Your message has been sent.");
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        setFormStatus("Failed to send message. Please try again later.");
+        console.error("Submission error:", result);
+      }
+    } catch (error) {
+      setFormStatus("Something went wrong. Please check your connection.");
+      console.error("Network error:", error);
+    }
+
+    setTimeout(() => {
+      setFormStatus('');
+    }, 4000);
+  };
+
   const handleCallNow = () => {
-    // Updated WhatsApp number for Chainak
     const whatsappNumber = '923377240303';
     const message = 'Hi! I would like to place an order or make an inquiry.';
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -40,7 +73,7 @@ const Contact = () => {
             Get in <span className="text-amber-600">Touch</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We'd love to hear from you! Reach out for reservations, catering, or just to say hello
+            We'd love to hear from you! Reach out for reservations, catering, or just to say hello.
           </p>
         </div>
 
@@ -48,7 +81,7 @@ const Contact = () => {
           {/* Contact Information */}
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-8">Visit Us Today</h3>
-            
+
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <div className="bg-amber-100 p-3 rounded-lg">
@@ -182,6 +215,12 @@ const Contact = () => {
                 <Send className="h-5 w-5" />
                 <span>Send Message</span>
               </button>
+
+              {formStatus && (
+                <div className="text-center text-green-600 font-medium mt-4">
+                  {formStatus}
+                </div>
+              )}
             </form>
           </div>
         </div>
