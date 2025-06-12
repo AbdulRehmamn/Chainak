@@ -23,6 +23,24 @@
   }
 }
 
+@keyframes gate-open-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes gate-open-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 .animate-fade-in-up {
   animation: fade-in-up 0.8s ease-out forwards;
 }
@@ -39,6 +57,14 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-gate-open-left {
+  animation: gate-open-left 1.5s ease-in-out forwards;
+}
+
+.animate-gate-open-right {
+  animation: gate-open-right 1.5s ease-in-out forwards;
 }
 
 /* Smooth scrolling */
@@ -106,4 +132,36 @@ img {
   .text-5xl {
     font-size: 2.5rem;
   }
+  
+  .text-8xl {
+    font-size: 4rem;
+  }
+}
+
+/* Gate animation specific styles */
+.gate-door {
+  background-image: 
+    linear-gradient(45deg, rgba(146, 64, 14, 0.1) 25%, transparent 25%), 
+    linear-gradient(-45deg, rgba(146, 64, 14, 0.1) 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, rgba(146, 64, 14, 0.1) 75%), 
+    linear-gradient(-45deg, transparent 75%, rgba(146, 64, 14, 0.1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Particle animations */
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(240deg);
+  }
+}
+
+.animate-particle {
+  animation: particle-float 4s ease-in-out infinite;
 }
