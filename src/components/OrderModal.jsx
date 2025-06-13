@@ -20,6 +20,7 @@ const OrderModal = ({ isOpen, onClose }) => {
     { id: 'sandwiches', name: 'Sandwiches', icon: '🥪' },
     { id: 'pasta', name: 'Pasta', icon: '🍝' },
     { id: 'burgers', name: 'Burgers', icon: '🍔' },
+    { id: 'pancakes', name: 'pancakes', icon: '🥞' },
     { id: 'shakes', name: 'Shakes', icon: '🥤' },
     { id: 'fries', name: 'Fries', icon: '🍟' },
     { id: 'parathaRoll', name: 'Paratha Roll', icon: '🌯' },
@@ -74,6 +75,9 @@ const OrderModal = ({ isOpen, onClose }) => {
       { id: 30, name: 'Chicken Patty Burger', price: 450, description: 'Chicken patty with lettuce, tomato, sauce', popular: false, category: 'burgers' },
       { id: 31, name: 'Grilled Chicken Burger', price: 500, description: 'Grilled chicken with spicy sauce', popular: false, category: 'burgers' },
       { id: 32, name: 'Zinger Burger', price: 550, description: 'Spicy zinger with special sauce', popular: true, category: 'burgers' },
+    ],
+    pancakes:[
+      {id:1 , name:'panCakes' , price:450 ,description:'Fluffy pancakes served with maple syrup and butter'},
     ],
     shakes: [
       { id: 33, name: 'Oreo Shake', price: 450, description: 'Oreo cookie shake', popular: false, category: 'shakes' },

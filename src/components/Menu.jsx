@@ -11,6 +11,7 @@ const Menu = ({ onOrderClick }) => {
     { id: 'sandwiches', name: 'Sandwiches', icon: '🥪' },
     { id: 'pasta', name: 'Pasta', icon: '🍝' },
     { id: 'burgers', name: 'Burgers', icon: '🍔' },
+    { id: 'pancakes', name: 'Pancakes', icon: '🥞' },
     { id: 'shakes', name: 'Shakes', icon: '🥤' },
     { id: 'fries', name: 'Fries', icon: '🍟' },
     { id: 'parathaRoll', name: 'Paratha Roll', icon: '🌯' },
@@ -23,42 +24,41 @@ const Menu = ({ onOrderClick }) => {
 
   const menuItems = {
     breakfast: [
-      { name: 'Paratha ', price: 'Rs. 80', description: 'Paratha ', popular: false },
+      { name: 'Paratha', price: 'Rs. 80', description: 'Paratha', popular: false },
       { name: 'Paratha Anda', price: 'Rs. 280', description: 'Paratha with egg', popular: false },
       { name: 'French Toast (+Slice+Tea)', price: 'Rs. 250', description: 'French toast with tea', popular: false },
       { name: 'Omelette + Egg Fry', price: 'Rs. 220', description: 'Omelette with egg fry', popular: false },
-        { name: ' Chese Omelette ', price: 'Rs. 200', description: ' Chesse omelette', popular: false },
+      { name: 'Chese Omelette', price: 'Rs. 200', description: 'Chesse omelette', popular: false },
       { name: 'Plain Bread + Omelette Egg Fry', price: 'Rs. 200', description: 'Bread with omelette and egg fry', popular: false },
       { name: 'Lassi', price: 'Rs. 250', description: 'Traditional yogurt drink', popular: false },
     ],
     tea: [
       { name: 'Karak Chai', price: 'Rs. 200', description: 'Strong spiced tea', popular: false },
       { name: 'Doodh Pati', price: 'Rs. 200', description: 'Milky tea', popular: false },
-        { name: 'Elachi Chai', price: 'Rs. 200', description: 'Elachi Tea', popular: false },
+      { name: 'Elachi Chai', price: 'Rs. 200', description: 'Elachi Tea', popular: false },
       { name: 'Chainak Special', price: 'Rs. 250', description: 'Special blend tea', popular: true },
       { name: 'Chocolate Tea', price: 'Rs. 250', description: 'Tea with chocolate flavor', popular: false },
       { name: 'Coffee', price: 'Rs. 350', description: 'Coffee', popular: false },
-     { name: 'Kehwa', price: 'Rs. 200', description: 'Traditional Kashmiri green tea ', popular: false }
+      { name: 'Kehwa', price: 'Rs. 200', description: 'Traditional Kashmiri green tea', popular: false },
     ],
     starter: [
       { name: 'Samosa (6 pcs)', price: 'Rs. 350', description: 'Crispy samosas', popular: false },
       { name: 'Nuggets(6 pcs)', price: 'Rs. 350', description: 'Crispy Nuggets', popular: false },
       { name: 'Chicken Strips (5 pcs)', price: 'Rs. 450', description: 'Fried chicken strips', popular: false },
-    { name: 'Chicken Roll (5 pcs)', price: 'Rs. 350', description: 'Crispy fried chicken rolls ', popular: false },
+      { name: 'Chicken Roll (5 pcs)', price: 'Rs. 350', description: 'Crispy fried chicken rolls', popular: false },
       { name: 'Hot Shots', price: 'Rs. 400', description: 'Spicy chicken bites', popular: false },
       { name: 'Cheese Ball', price: 'Rs. 450', description: 'Cheesy fried balls', popular: false },
     ],
     sandwiches: [
       { name: 'Club Sandwich', price: 'Rs. 500', description: 'Chicken, lettuce, tomato', popular: false },
       { name: 'Grill Sandwich', price: 'Rs. 500', description: 'Grilled cheese sandwich', popular: false },
-    
       { name: 'Cheese Sandwich', price: 'Rs. 549', description: 'Double layer with cheese and mayo', popular: false },
       { name: 'Mexican Sandwich', price: 'Rs. 650', description: 'Spicy Mexican style', popular: false },
       { name: 'Chainak Special', price: 'Rs. 700', description: 'Special sandwich', popular: false },
       { name: 'Student Sandwich', price: 'Rs. 349', description: 'Affordable option', popular: true },
     ],
     pasta: [
-        { name: 'Alfredo Pasta', price: 'Rs. 600', description: ' creamy pasta', popular: false },
+      { name: 'Alfredo Pasta', price: 'Rs. 600', description: 'Creamy pasta', popular: false },
       { name: 'Spicy Alfredo Pasta', price: 'Rs. 650', description: 'Spicy creamy pasta', popular: false },
       { name: 'Arrabiata Pasta', price: 'Rs. 750', description: 'Spicy tomato pasta', popular: false },
     ],
@@ -66,7 +66,9 @@ const Menu = ({ onOrderClick }) => {
       { name: 'Chicken Patty Burger', price: 'Rs. 450', description: 'Chicken patty with lettuce, tomato, sauce', popular: false },
       { name: 'Grilled Chicken Burger', price: 'Rs. 500', description: 'Grilled chicken with spicy sauce', popular: false },
       { name: 'Zinger Burger', price: 'Rs. 550', description: 'Spicy zinger with special sauce', popular: true },
-   
+    ],
+    pancakes: [
+      { id: 1, name: 'Pan Cake', price: 'Rs. 450', description: 'Fluffy pancakes served with maple syrup and butter', popular: false },
     ],
     shakes: [
       { name: 'Oreo Shake', price: 'Rs. 450', description: 'Oreo cookie shake', popular: false },
@@ -92,20 +94,20 @@ const Menu = ({ onOrderClick }) => {
     ],
     drinks: [
       { name: 'Mint Margarita', price: 'Rs. 250', description: 'Refreshing mint drink', popular: false },
-     { name: 'Pina Colada', price: 'Rs. 400', description: 'A creamy blend of pineapple and coconut with a hint of rum flavor, served chilled', popular: false },
+      { name: 'Pina Colada', price: 'Rs. 400', description: 'A creamy blend of pineapple and coconut with a hint of rum flavor, served chilled', popular: false },
       { name: 'Fresh Lime', price: 'Rs. 250', description: 'Fresh lime soda', popular: false },
-       { name: 'Mint Lemonade', price: 'Rs. 320', description: 'A refreshing blend of fresh lemon juice, mint, and a touch of sweetness, served over ice', popular: false },
+      { name: 'Mint Lemonade', price: 'Rs. 320', description: 'A refreshing blend of fresh lemon juice, mint, and a touch of sweetness, served over ice', popular: false },
       { name: 'Cold Coffee', price: 'Rs. 450', description: 'Iced coffee', popular: false },
       { name: 'Doodh Soda', price: 'Rs. 250', description: 'Milk soda', popular: false },
-      { name: 'Lassi ', price: 'Rs. 250', description: 'Yogurt and Milk', popular: false },
-      { name: 'Cold Drink (345ml/500ml) ', price: 'Rs. 150/250', description: 'Cold Drink', popular: false },
+      { name: 'Lassi', price: 'Rs. 250', description: 'Yogurt and Milk', popular: false },
+      { name: 'Cold Drink (345ml/500ml)', price: 'Rs. 150/250', description: 'Cold Drink', popular: false },
       { name: 'Mineral Water (500ml)', price: 'Rs. 100', description: 'Bottled water', popular: false },
       { name: 'Sting', price: 'Rs. 250', description: 'Energy drink', popular: false },
       { name: 'Red Lime', price: 'Rs. 250', description: 'Red flavored drink', popular: false },
     ],
     dessert: [
       { name: 'Brownie With Ice Cream', price: 'Rs. 349', description: 'Brownie with ice cream', popular: false },
-      { name: 'Brownie ', price: 'Rs. 249', description: 'Brownie ', popular: false },
+      { name: 'Brownie', price: 'Rs. 249', description: 'Brownie', popular: false },
       { name: 'Gulab Jamun (3 pcs)', price: 'Rs. 249', description: 'Sweet gulab jamun', popular: false },
       { name: 'Chainak Special Bun', price: 'Rs. 249', description: 'Special bun dessert', popular: false },
       { name: 'Nutella Bun', price: 'Rs. 249', description: 'Nutella filled bun', popular: false },
@@ -124,7 +126,7 @@ const Menu = ({ onOrderClick }) => {
     ],
     deals: [
       { name: 'Deal 1', price: 'Rs. 700', description: '1 Chicken Cheese Sandwich + 1 FreshLime', popular: false },
-      { name: 'Deal 2', price: 'Rs. 600', description: '1 Grill Burger + 1 Mint ', popular: false },
+      { name: 'Deal 2', price: 'Rs. 600', description: '1 Grill Burger + 1 Mint', popular: false },
       { name: 'Deal 3', price: 'Rs. 400', description: '1 Truck Chai + 1 Chainak Bun', popular: false },
       { name: 'Deal 4', price: 'Rs. 700', description: '1 Alfredo Pasta + 1 Drink (345ml)', popular: false },
       { name: 'Deal 5', price: 'Rs. 650', description: '1 Zinger Burger + 1 Drink (345ml)', popular: false },
