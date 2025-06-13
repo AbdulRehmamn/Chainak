@@ -263,7 +263,7 @@ const LoaderGate = ({ onEnter }) => {
                     <span>Contact Us</span>
                   </button>
                   
-                  <div className="bg-black/30 backdrop-blur-sm px-6 rounded-xl border border-amber-300/20 mb-11 ">
+                  <div className="bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-amber-300/20 mb-11 sm-hidden max-sm:hidden">
                     <div className="flex items-center space-x-2 text-amber-200">
                       <MapPin className="h-5 w-5" />
                       <span className="font-medium ">Johar Town, Lahore</span>
