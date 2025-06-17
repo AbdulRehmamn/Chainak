@@ -4,11 +4,11 @@ const Gallery = () => {
   const images = [
     {
       url: "/images/1.png",
-      alt: "Chainak's cozy interior with warm wooden seating"
+      alt: "a dark background with a glowing sign,illuminated by warm hanging light bulbs."
     },
     {
       url: "/images/3.png",
-      alt: "Modern cafe counter with vibrant blue and orange design"
+      alt: "a dimly lit brick wall framed by a wire grid, with a chair and potted plant in the foreground."
     },
     {
       url: "/images/5.png",
@@ -16,11 +16,11 @@ const Gallery = () => {
     },
     {
       url: "/images/6.png",
-      alt: "Contemporary interior with blue lighting and modern decor"
+      alt: "Contemporary interior with White lighting and modern decor"
     },
     {
       url: "/images/7.png",
-      alt: "Contemporary interior with blue lighting and modern decor"
+      alt: "indoor scene with a brick wall mural of a guitarist, a potted plant with string lights, and wooden furniture."
     }
   ];
 
