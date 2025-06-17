@@ -7,15 +7,19 @@ const Gallery = () => {
       alt: "Chainak's cozy interior with warm wooden seating"
     },
     {
-      url: "/images/2.png",
+      url: "/images/3.png",
       alt: "Modern cafe counter with vibrant blue and orange design"
     },
     {
-      url: "/images/3.png",
+      url: "/images/5.png",
       alt: "Evening ambiance with string lights and outdoor seating"
     },
     {
-      url: "/images/4.png",
+      url: "/images/6.png",
+      alt: "Contemporary interior with blue lighting and modern decor"
+    },
+    {
+      url: "/images/7.png",
       alt: "Contemporary interior with blue lighting and modern decor"
     }
   ];
