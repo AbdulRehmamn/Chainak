@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { X, Plus, Minus, ShoppingCart, Phone, CreditCard, Banknote } from 'lucide-react';
+import {
+  X,
+  Plus,
+  Minus,
+  ShoppingCart,
+  CreditCard,
+  Banknote,
+} from 'lucide-react';
 
 const OrderModal = ({ isOpen, onClose }) => {
   const [cart, setCart] = useState([]);
@@ -7,11 +14,12 @@ const OrderModal = ({ isOpen, onClose }) => {
     name: '',
     phone: '',
     address: '',
-    notes: ''
+    notes: '',
   });
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [activeCategory, setActiveCategory] = useState('all');
 
+  // Categories with icons
   const categories = [
     { id: 'all', name: 'All Items', icon: '📋' },
     { id: 'breakfast', name: 'Breakfast', icon: '🍳' },
@@ -20,7 +28,7 @@ const OrderModal = ({ isOpen, onClose }) => {
     { id: 'sandwiches', name: 'Sandwiches', icon: '🥪' },
     { id: 'pasta', name: 'Pasta', icon: '🍝' },
     { id: 'burgers', name: 'Burgers', icon: '🍔' },
-    { id: 'pancakes', name: 'pancakes', icon: '🥞' },
+    { id: 'pancakes', name: 'Pancakes', icon: '🥞' },
     { id: 'shakes', name: 'Shakes', icon: '🥤' },
     { id: 'fries', name: 'Fries', icon: '🍟' },
     { id: 'parathaRoll', name: 'Paratha Roll', icon: '🌯' },
@@ -31,6 +39,7 @@ const OrderModal = ({ isOpen, onClose }) => {
     { id: 'deals', name: 'Deals', icon: '💰' },
   ];
 
+  // Menu items grouped by category
   const menuItems = {
     breakfast: [
       { id: 1, name: 'Paratha', price: 80, description: 'Paratha', popular: false, category: 'breakfast' },
@@ -76,8 +85,8 @@ const OrderModal = ({ isOpen, onClose }) => {
       { id: 31, name: 'Grilled Chicken Burger', price: 500, description: 'Grilled chicken with spicy sauce', popular: false, category: 'burgers' },
       { id: 32, name: 'Zinger Burger', price: 550, description: 'Spicy zinger with special sauce', popular: true, category: 'burgers' },
     ],
-    pancakes:[
-      {id:1 , name:'panCakes' , price:450 ,description:'Fluffy pancakes served with maple syrup and butter'},
+    pancakes: [
+      { id: 1, name: 'Pancakes', price: 450, description: 'Fluffy pancakes served with maple syrup and butter', category: 'pancakes' },
     ],
     shakes: [
       { id: 33, name: 'Oreo Shake', price: 450, description: 'Oreo cookie shake', popular: false, category: 'shakes' },
@@ -151,10 +160,8 @@ const OrderModal = ({ isOpen, onClose }) => {
   const addToCart = (item) => {
     const existingItem = cart.find(cartItem => cartItem.id === item.id);
     if (existingItem) {
-      setCart(cart.map(cartItem => 
-        cartItem.id === item.id 
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
+      setCart(cart.map(ci =>
+        ci.id === item.id ? { ...ci, quantity: ci.quantity + 1 } : ci
       ));
     } else {
       setCart([...cart, { ...item, quantity: 1 }]);
@@ -162,53 +169,44 @@ const OrderModal = ({ isOpen, onClose }) => {
   };
 
   const removeFromCart = (itemId) => {
-    const existingItem = cart.find(cartItem => cartItem.id === itemId);
+    const existingItem = cart.find(item => item.id === itemId);
     if (existingItem && existingItem.quantity > 1) {
-      setCart(cart.map(cartItem => 
-        cartItem.id === itemId 
-          ? { ...cartItem, quantity: cartItem.quantity - 1 }
-          : cartItem
+      setCart(cart.map(item =>
+        item.id === itemId ? { ...item, quantity: item.quantity - 1 } : item
       ));
     } else {
-      setCart(cart.filter(cartItem => cartItem.id !== itemId));
+      setCart(cart.filter(item => item.id !== itemId));
     }
   };
 
   const getTotalPrice = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const handleSubmitOrder = () => {
-    if (cart.length === 0) {
-      alert('Please add items to your cart first!');
-      return;
-    }
-
     if (!customerInfo.name || !customerInfo.phone) {
-      alert('Please fill in your name and phone number!');
+      alert('Please enter your name and phone number.');
       return;
     }
 
-    let message = `🍵 *New Order from Chainak Website*\n\n`;
-    message += `👤 *Customer Details:*\n`;
-    message += `Name: ${customerInfo.name}\n`;
-    message += `Phone: ${customerInfo.phone}\n`;
+    let message = `*New Order from Chainak Website*\n\n`;
+    message += `*Customer Details*\n`;
+    message += `Name: ${customerInfo.name}\nPhone: ${customerInfo.phone}\n`;
     if (customerInfo.address) message += `Address: ${customerInfo.address}\n`;
-    message += `\n📋 *Order Details:*\n`;
-    
+
+    message += `\n*Order Details*\n`;
     cart.forEach(item => {
       message += `• ${item.name} x${item.quantity} = Rs. ${item.price * item.quantity}\n`;
     });
-    
-    message += `\n💰 *Total: Rs. ${getTotalPrice()}*\n`;
-    message += `💳 *Payment Method: ${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}*\n`;
-    if (customerInfo.notes) message += `\n📝 *Special Notes:* ${customerInfo.notes}`;
+
+    message += `\n*Total:* Rs. ${getTotalPrice()}\n`;
+    message += `*Payment Method:* ${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}\n`;
+    if (customerInfo.notes) message += `\n*Notes:* ${customerInfo.notes}`;
 
     const whatsappNumber = '923377240303';
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    
     window.open(whatsappUrl, '_blank');
-    
+
     setCart([]);
     setCustomerInfo({ name: '', phone: '', address: '', notes: '' });
     setPaymentMethod('cod');
@@ -218,60 +216,52 @@ const OrderModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display' }}>
-            Place Your Order
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="h-6 w-6" />
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[95vh] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-8 py-6 border-b">
+          <h2 className="text-3xl font-bold">Place Your Order</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition">
+            <X size={24} />
           </button>
         </div>
 
-        <div className="flex flex-col lg:flex-row max-h-[calc(90vh-80px)]">
-          {/* Menu Items */}
-          <div className="flex-1 p-6 overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Select Items</h3>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {categories.map(category => (
+        <div className="flex flex-col lg:flex-row h-full overflow-y-auto">
+          {/* Left Side - Menu */}
+          <div className="flex-1 p-8 overflow-y-auto">
+            <h3 className="text-xl font-semibold mb-6">Select Items</h3>
+            <div className="flex flex-wrap gap-3 mb-8">
+              {categories.map(cat => (
                 <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors ${
-                    activeCategory === category.id
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-5 py-3 rounded-xl flex items-center space-x-2 ${
+                    activeCategory === cat.id
                       ? 'bg-amber-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  <span>{category.icon}</span>
-                  <span>{category.name}</span>
+                  <span>{cat.icon}</span>
+                  <span>{cat.name}</span>
                 </button>
               ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(activeCategory === 'all' ? allItems : menuItems[activeCategory]).map(item => (
-                <div key={item.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-start mb-2">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {(activeCategory === 'all' ? allItems : menuItems[activeCategory])?.map(item => (
+                <div key={item.id} className="border rounded-xl p-6 hover:shadow-lg">
+                  <div className="flex justify-between mb-4">
                     <div>
-                      <h4 className="font-semibold">{item.name}</h4>
-                      <p className="text-sm text-gray-600">{item.description}</p>
-                      {item.popular && (
-                        <span className="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full mt-1">
-                          Popular
-                        </span>
-                      )}
+                      <h4 className="font-bold text-lg">{item.name}</h4>
+                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
                     </div>
-                    <span className="text-amber-600 font-bold">{item.price}</span>
+                    <span className="text-amber-600 font-bold text-lg">Rs. {item.price}</span>
                   </div>
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-full bg-amber-600 text-white py-2 px-4 rounded-lg hover:bg-amber-700 transition-colors flex items-center justify-center space-x-2"
+                    className="w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700 flex items-center justify-center space-x-2"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus size={18} />
                     <span>Add to Cart</span>
                   </button>
                 </div>
@@ -279,34 +269,28 @@ const OrderModal = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Cart and Customer Info */}
-          <div className="w-full lg:w-96 border-l bg-gray-50 p-6 overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Your Order</h3>
-            
+          {/* Right Side - Cart & Info */}
+          <div className="w-full lg:w-96 border-l bg-gray-50 p-8 overflow-y-auto">
+            <h3 className="text-xl font-semibold mb-6">Your Order Summary</h3>
+
             {/* Cart Items */}
-            <div className="space-y-3 mb-6">
+            <div className="space-y-4 mb-8">
               {cart.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">Your cart is empty</p>
+                <p className="text-gray-500 text-center py-6">🛒 Your cart is empty</p>
               ) : (
                 cart.map(item => (
-                  <div key={item.id} className="flex items-center justify-between bg-white p-3 rounded-lg">
-                    <div className="flex-1">
+                  <div key={item.id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
+                    <div className="flex-1 pr-2">
                       <h4 className="font-medium">{item.name}</h4>
                       <p className="text-sm text-gray-600">Rs. {item.price} each</p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="p-1 hover:bg-gray-100 rounded"
-                      >
-                        <Minus className="h-4 w-4" />
+                      <button onClick={() => removeFromCart(item.id)} className="p-1 hover:bg-gray-100 rounded">
+                        <Minus size={16} />
                       </button>
                       <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        onClick={() => addToCart(item)}
-                        className="p-1 hover:bg-gray-100 rounded"
-                      >
-                        <Plus className="h-4 w-4" />
+                      <button onClick={() => addToCart(item)} className="p-1 hover:bg-gray-100 rounded">
+                        <Plus size={16} />
                       </button>
                     </div>
                   </div>
@@ -317,96 +301,87 @@ const OrderModal = ({ isOpen, onClose }) => {
             {/* Total */}
             {cart.length > 0 && (
               <div className="border-t pt-4 mb-6">
-                <div className="flex justify-between items-center text-lg font-bold">
+                <div className="flex justify-between text-xl font-bold">
                   <span>Total:</span>
                   <span className="text-amber-600">Rs. {getTotalPrice()}</span>
                 </div>
               </div>
             )}
 
-            {/* Customer Information */}
-            <div className="space-y-4 mb-6">
-              <h4 className="font-semibold">Customer Information</h4>
+            {/* Customer Form */}
+            <div className="space-y-5 mb-6">
+              <h4 className="font-semibold text-lg">Customer Info</h4>
               <input
                 type="text"
-                placeholder="Your Name *"
+                placeholder="Full Name *"
                 value={customerInfo.name}
-                onChange={(e) => setCustomerInfo({...customerInfo, name: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500"
                 required
               />
               <input
                 type="tel"
                 placeholder="Phone Number *"
                 value={customerInfo.phone}
-                onChange={(e) => setCustomerInfo({...customerInfo, phone: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500"
                 required
               />
               <input
                 type="text"
                 placeholder="Delivery Address (Optional)"
                 value={customerInfo.address}
-                onChange={(e) => setCustomerInfo({...customerInfo, address: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500"
               />
               <textarea
-                placeholder="Special Instructions (Optional)"
+                placeholder="Any special instructions?"
                 value={customerInfo.notes}
-                onChange={(e) => setCustomerInfo({...customerInfo, notes: e.target.value})}
-                className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
+                onChange={(e) => setCustomerInfo({ ...customerInfo, notes: e.target.value })}
                 rows={3}
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500 resize-none"
               />
             </div>
 
-            {/* Payment Method Selection */}
-            <div className="mb-6">
-              <h4 className="font-semibold mb-3">Payment Method</h4>
-              <div className="space-y-3">
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="cod"
-                    checked={paymentMethod === 'cod'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="text-amber-600 focus:ring-amber-500"
-                  />
-                  <div className="flex items-center space-x-2">
-                    <Banknote className="h-5 w-5 text-green-600" />
-                    <span className="font-medium">Cash on Delivery (COD)</span>
-                  </div>
-                </label>
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="online"
-                    checked={paymentMethod === 'online'}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="text-amber-600 focus:ring-amber-500"
-                  />
-                  <div className="flex items-center space-x-2">
-                    <CreditCard className="h-5 w-5 text-blue-600" />
-                    <span className="font-medium">Online Payment</span>
-                  </div>
-                </label>
-              </div>
-              <div className="mt-2 text-sm text-gray-600">
-                {paymentMethod === 'cod' ? (
-                  <p>💰 Pay with cash when your order is delivered</p>
-                ) : (
-                  <p>💳 We'll send you payment details via WhatsApp</p>
-                )}
-              </div>
+            {/* Payment Method */}
+            <div className="mb-8">
+              <h4 className="font-semibold text-lg mb-4">Payment Method</h4>
+              <label className="flex items-center space-x-4 cursor-pointer mb-4">
+                <input
+                  type="radio"
+                  name="payment"
+                  value="cod"
+                  checked={paymentMethod === 'cod'}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="text-amber-600 focus:ring-amber-500"
+                />
+                <div className="flex items-center space-x-3">
+                  <Banknote size={20} className="text-green-600" />
+                  <span>Cash on Delivery (COD)</span>
+                </div>
+              </label>
+              <label className="flex items-center space-x-4 cursor-pointer">
+                <input
+                  type="radio"
+                  name="payment"
+                  value="online"
+                  checked={paymentMethod === 'online'}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                  className="text-amber-600 focus:ring-amber-500"
+                />
+                <div className="flex items-center space-x-3">
+                  <CreditCard size={20} className="text-blue-600" />
+                  <span>Online Payment</span>
+                </div>
+              </label>
             </div>
 
             {/* Submit Button */}
             <button
               onClick={handleSubmitOrder}
-              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+              className="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 flex items-center justify-center space-x-3"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart size={20} />
               <span>Send Order via WhatsApp</span>
             </button>
           </div>

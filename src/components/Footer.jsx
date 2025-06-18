@@ -75,11 +75,11 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Popular Items</h3>
             <ul className="space-y-2 text-white">
-              <li>Desi Chai - Rs. 120</li>
-              <li>Cappuccino - Rs. 250</li>
-              <li>Kashmiri Chai - Rs. 180</li>
-              <li>Masala Chai - Rs. 140</li>
-              <li>Fresh Samosas - Rs. 80</li>
+              <li>Chainak Special - Rs. 250</li>
+              <li>Student Sandwich - Rs. 349</li>
+              <li>Zinger Burger - Rs. 550</li>
+              <li>Loaded Fries - Rs. 550</li>
+              <li>Deal 9 - Rs. 2500</li>
             </ul>
           </div>
 
