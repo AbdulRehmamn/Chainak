@@ -33,10 +33,10 @@ const LoaderGate = ({ onEnter }) => {
     }
     
     setIsOpening(true);
-    // Delay to show the gate opening animation
+    // Extended delay to show the slower gate opening animation
     setTimeout(() => {
       onEnter();
-    }, 2000);
+    }, 4500); // Increased from 2000ms to 4500ms for slower animation
   };
 
   const handleCallNow = () => {
@@ -85,9 +85,14 @@ const LoaderGate = ({ onEnter }) => {
       <div className="relative h-full flex">
         {/* Left Door */}
         <div 
-          className={`w-1/2 h-full bg-gradient-to-br from-amber-800 via-amber-700 to-orange-800 transform transition-all duration-2000 ease-out relative overflow-hidden ${
-            (isOpening && isOpen) ? '-translate-x-full opacity-90' : 'translate-x-0'
+          className={`w-1/2 h-full bg-gradient-to-br from-amber-800 via-amber-700 to-orange-800 transform transition-all ease-out relative overflow-hidden ${
+            (isOpening && isOpen) 
+              ? '-translate-x-full opacity-90 duration-[4000ms]' 
+              : 'translate-x-0 duration-300'
           }`}
+          style={{
+            transitionTimingFunction: isOpening ? 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'ease-out'
+          }}
         >
           {/* Elegant Door Pattern */}
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-amber-600/20 to-orange-600/30"></div>
@@ -114,13 +119,23 @@ const LoaderGate = ({ onEnter }) => {
             <div className="w-4 h-20 bg-gradient-to-b from-yellow-400 to-amber-500 rounded-full shadow-2xl"></div>
             <div className="w-6 h-6 bg-gradient-to-br from-yellow-300 to-amber-400 rounded-full shadow-lg -mt-2 -ml-1"></div>
           </div>
+
+          {/* Door Opening Sound Effect Visual */}
+          {isOpening && (
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-amber-400/10 to-transparent animate-pulse"></div>
+          )}
         </div>
 
         {/* Right Door */}
         <div 
-          className={`w-1/2 h-full bg-gradient-to-bl from-amber-800 via-amber-700 to-orange-800 transform transition-all duration-2000 ease-out relative overflow-hidden ${
-            (isOpening && isOpen) ? 'translate-x-full opacity-90' : 'translate-x-0'
+          className={`w-1/2 h-full bg-gradient-to-bl from-amber-800 via-amber-700 to-orange-800 transform transition-all ease-out relative overflow-hidden ${
+            (isOpening && isOpen) 
+              ? 'translate-x-full opacity-90 duration-[4000ms]' 
+              : 'translate-x-0 duration-300'
           }`}
+          style={{
+            transitionTimingFunction: isOpening ? 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'ease-out'
+          }}
         >
           {/* Elegant Door Pattern */}
           <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-amber-600/20 to-orange-600/30"></div>
@@ -147,6 +162,11 @@ const LoaderGate = ({ onEnter }) => {
             <div className="w-4 h-20 bg-gradient-to-b from-yellow-400 to-amber-500 rounded-full shadow-2xl"></div>
             <div className="w-6 h-6 bg-gradient-to-br from-yellow-300 to-amber-400 rounded-full shadow-lg -mt-2 ml-1"></div>
           </div>
+
+          {/* Door Opening Sound Effect Visual */}
+          {isOpening && (
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-amber-400/10 to-transparent animate-pulse"></div>
+          )}
         </div>
       </div>
 
@@ -156,23 +176,37 @@ const LoaderGate = ({ onEnter }) => {
           {/* Elegant Logo Section */}
           <div className="mb-8">
             <div className="relative mb-8">
-              {/* Logo Background Circle - Moved down */}
-              <div className="w-32 h-32 mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4">
-                <Coffee className="h-16 w-16 text-amber-200" />
+              {/* Logo Background Circle - Enhanced with opening animation */}
+              <div className={`w-32 h-32 mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4 transition-all duration-1000 ${
+                isOpening ? 'scale-110 shadow-amber-400/50' : ''
+              }`}>
+                <Coffee className={`h-16 w-16 text-amber-200 transition-all duration-1000 ${
+                  isOpening ? 'rotate-12 text-amber-100' : ''
+                }`} />
               </div>
               
-              {/* Floating Stars - Adjusted positions */}
-              <Star className="absolute top-2 -right-2 h-6 w-6 text-amber-300 animate-pulse" />
-              <Star className="absolute bottom-2 -left-2 h-4 w-4 text-orange-300 animate-pulse delay-500" />
+              {/* Floating Stars - Enhanced animation during opening */}
+              <Star className={`absolute top-2 -right-2 h-6 w-6 text-amber-300 animate-pulse transition-all duration-1000 ${
+                isOpening ? 'scale-125 text-yellow-300' : ''
+              }`} />
+              <Star className={`absolute bottom-2 -left-2 h-4 w-4 text-orange-300 animate-pulse delay-500 transition-all duration-1000 ${
+                isOpening ? 'scale-125 text-yellow-300' : ''
+              }`} />
             </div>
             
-            <h1 className="text-7xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent" style={{ fontFamily: 'Playfair Display' }}>
+            <h1 className={`text-7xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent transition-all duration-1000 ${
+              isOpening ? 'scale-105' : ''
+            }`} style={{ fontFamily: 'Playfair Display' }}>
               Chainak
             </h1>
-            <p className="text-2xl md:text-3xl text-amber-100 font-light tracking-wide">
+            <p className={`text-2xl md:text-3xl text-amber-100 font-light tracking-wide transition-all duration-1000 ${
+              isOpening ? 'text-yellow-100' : ''
+            }`}>
               Premium Tea & Coffee Experience
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4"></div>
+            <div className={`w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4 transition-all duration-1000 ${
+              isOpening ? 'w-32 via-yellow-400' : ''
+            }`}></div>
           </div>
 
           {/* Elegant Time Display */}
@@ -244,6 +278,11 @@ const LoaderGate = ({ onEnter }) => {
                   <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-pulse"></div>
                 </div>
                 <p className="text-amber-200 text-xl font-semibold">Opening the gates to excellence...</p>
+                <div className="flex space-x-2">
+                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce delay-100"></div>
+                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200"></div>
+                </div>
               </div>
             )
           ) : (
@@ -257,16 +296,16 @@ const LoaderGate = ({ onEnter }) => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                   <button
                     onClick={handleCallNow}
-                    className="group bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 mb-11"
+                    className="group bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
                   >
                     <Phone className="h-5 w-5" />
                     <span>Contact Us</span>
                   </button>
                   
-                  <div className="bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-amber-300/20 mb-11 sm-hidden max-sm:hidden">
+                  <div className="bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-amber-300/20 hidden sm:block">
                     <div className="flex items-center space-x-2 text-amber-200">
                       <MapPin className="h-5 w-5" />
-                      <span className="font-medium ">Johar Town, Lahore</span>
+                      <span className="font-medium">Johar Town, Lahore</span>
                     </div>
                   </div>
                 </div>
@@ -280,9 +319,15 @@ const LoaderGate = ({ onEnter }) => {
 
           {/* Elegant Decorative Elements */}
           <div className="flex justify-center space-x-3">
-            <div className="w-3 h-3 bg-amber-400 rounded-full animate-bounce shadow-lg shadow-amber-400/50"></div>
-            <div className="w-3 h-3 bg-orange-400 rounded-full animate-bounce delay-100 shadow-lg shadow-orange-400/50"></div>
-            <div className="w-3 h-3 bg-amber-400 rounded-full animate-bounce delay-200 shadow-lg shadow-amber-400/50"></div>
+            <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
+              isOpening ? 'scale-125' : ''
+            }`}></div>
+            <div className={`w-3 h-3 bg-orange-400 rounded-full animate-bounce delay-100 shadow-lg shadow-orange-400/50 transition-all duration-1000 ${
+              isOpening ? 'scale-125' : ''
+            }`}></div>
+            <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce delay-200 shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
+              isOpening ? 'scale-125' : ''
+            }`}></div>
           </div>
         </div>
       </div>
@@ -291,11 +336,19 @@ const LoaderGate = ({ onEnter }) => {
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-orange-400 via-yellow-400 to-amber-400"></div>
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-orange-400 via-yellow-400 to-amber-400"></div>
       
-      {/* Floating Ambient Elements */}
-      <div className="absolute top-20 left-20 w-6 h-6 bg-amber-400/20 rounded-full animate-float blur-sm"></div>
-      <div className="absolute bottom-32 right-16 w-8 h-8 bg-orange-400/15 rounded-full animate-bounce delay-1000 blur-sm"></div>
-      <div className="absolute top-1/3 right-1/4 w-4 h-4 bg-yellow-400/25 rounded-full animate-pulse delay-500 blur-sm"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-7 h-7 bg-amber-300/15 rounded-full animate-float delay-700 blur-sm"></div>
+      {/* Floating Ambient Elements - Enhanced during opening */}
+      <div className={`absolute top-20 left-20 w-6 h-6 bg-amber-400/20 rounded-full animate-float blur-sm transition-all duration-1000 ${
+        isOpening ? 'scale-150 bg-amber-400/40' : ''
+      }`}></div>
+      <div className={`absolute bottom-32 right-16 w-8 h-8 bg-orange-400/15 rounded-full animate-bounce delay-1000 blur-sm transition-all duration-1000 ${
+        isOpening ? 'scale-150 bg-orange-400/30' : ''
+      }`}></div>
+      <div className={`absolute top-1/3 right-1/4 w-4 h-4 bg-yellow-400/25 rounded-full animate-pulse delay-500 blur-sm transition-all duration-1000 ${
+        isOpening ? 'scale-150 bg-yellow-400/50' : ''
+      }`}></div>
+      <div className={`absolute bottom-1/4 left-1/3 w-7 h-7 bg-amber-300/15 rounded-full animate-float delay-700 blur-sm transition-all duration-1000 ${
+        isOpening ? 'scale-150 bg-amber-300/30' : ''
+      }`}></div>
     </div>
   );
 };
