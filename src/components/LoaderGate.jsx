@@ -202,7 +202,7 @@ const LoaderGate = ({ onEnter }) => {
             <p className={`text-2xl md:text-3xl text-amber-100 font-light tracking-wide transition-all duration-1000 ${
               isOpening ? 'text-yellow-100' : ''
             }`}>
-              Premium Tea & Coffee Experience
+              ✨  Chaska Chai Ka
             </p>
             <div className={`w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4 transition-all duration-1000 ${
               isOpening ? 'w-32 via-yellow-400' : ''
