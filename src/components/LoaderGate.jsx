@@ -268,7 +268,7 @@ const LoaderGate = ({ onEnter }) => {
                 </button>
                 
                <p className="text-amber-200/80 text-lg translate-y-[-0.5rem]">
-                ✨ Welcome to your premium tea & coffee experience
+                ✨  Chaska Chai Ka
                 </p>
               </div>
             ) : (
