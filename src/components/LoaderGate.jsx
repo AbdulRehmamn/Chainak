@@ -177,10 +177,10 @@ const LoaderGate = ({ onEnter }) => {
           <div className="mb-8">
             <div className="relative mb-8">
               {/* Logo Background Circle - Enhanced with opening animation */}
-              <div className={`w-32 h-32 mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4 transition-all duration-1000 ${
+              <div className={`w-32 h-32  mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4 transition-all duration-1000 ${
                 isOpening ? 'scale-110 shadow-amber-400/50' : ''
               }`}>
-                <Coffee className={`h-16 w-16 text-amber-200 transition-all duration-1000 ${
+                <Coffee className={`h-16 w-16  text-amber-200 transition-all duration-1000 ${
                   isOpening ? 'rotate-12 text-amber-100' : ''
                 }`} />
               </div>
@@ -194,31 +194,29 @@ const LoaderGate = ({ onEnter }) => {
               }`} />
             </div>
             
-            <h1 className={`text-7xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent transition-all duration-1000 ${
+            <h1 className={`text-7xl md:text-8xl mb-20 font-bold  bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent transition-all duration-1000 ${
               isOpening ? 'scale-105' : ''
             }`} style={{ fontFamily: 'Playfair Display' }}>
               Chainak
             </h1>
-            <p className={`text-2xl md:text-3xl text-amber-100 font-light tracking-wide transition-all duration-1000 ${
+            <p className={`text-2xl md:text-3xl mt-10 text-amber-100 font-light tracking-wide transition-all duration-1000 ${
               isOpening ? 'text-yellow-100' : ''
             }`}>
-              ✨  Chaska Chai Ka
+                Chaska Chai Ka
             </p>
-            <div className={`w-24 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mt-4 transition-all duration-1000 ${
-              isOpening ? 'w-32 via-yellow-400' : ''
-            }`}></div>
+            
           </div>
 
           {/* Elegant Time Display */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <div className="inline-flex items-center space-x-3 bg-black/20 backdrop-blur-md px-6 py-3 rounded-2xl border border-amber-300/20">
               <Clock className="h-6 w-6 text-amber-300" />
               <span className="text-amber-100 font-medium text-lg">{formatCurrentTime()}</span>
             </div>
-          </div>
+          </div> */}
 
           {/* Elegant Status Indicator */}
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <div className={`inline-flex items-center space-x-4 px-8 py-4 rounded-2xl backdrop-blur-md border-2 ${
               isOpen 
                 ? 'bg-emerald-500/20 border-emerald-400/50' 
@@ -233,24 +231,10 @@ const LoaderGate = ({ onEnter }) => {
                 {isOpen ? 'WE\'RE OPEN!' : 'CURRENTLY CLOSED'}
               </span>
             </div>
-          </div>
+          </div> */}
 
           {/* Elegant Operating Hours Card - Smaller border */}
-          <div className="mb-6 bg-black/20 backdrop-blur-md rounded-3xl p-6 border border-amber-300/10 shadow-2xl">
-            <h3 className="text-2xl font-semibold text-amber-200 mb-4" style={{ fontFamily: 'Playfair Display' }}>
-              Operating Hours
-            </h3>
-            <div className="space-y-2 text-amber-100">
-              <p className="text-xl font-medium">Daily: 12:00 PM - 2:00 AM</p>
-              {!isOpen && (
-                <div className="pt-2 border-t border-amber-300/10">
-                  <p className="text-amber-300 font-semibold text-lg">
-                    Next Opening: {getNextOpeningTime()}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+          
 
           {/* Action Section - Moved further up */}
           {isOpen ? (
@@ -268,7 +252,7 @@ const LoaderGate = ({ onEnter }) => {
                 </button>
                 
                <p className="text-amber-200/80 text-lg translate-y-[-0.5rem]">
-                ✨  Chaska Chai Ka
+                
                 </p>
               </div>
             ) : (
