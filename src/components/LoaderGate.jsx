@@ -170,148 +170,115 @@ const LoaderGate = ({ onEnter }) => {
         </div>
       </div>
 
-      {/* Center Content */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white z-10 max-w-3xl mx-auto px-6">
-          {/* Elegant Logo Section */}
-          <div className="mb-8">
-            <div className="relative mb-8">
-              {/* Logo Background Circle - Enhanced with opening animation */}
-              <div className={`w-32 h-32  mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4 transition-all duration-1000 ${
-                isOpening ? 'scale-110 shadow-amber-400/50' : ''
-              }`}>
-                <Coffee className={`h-16 w-16  text-amber-200 transition-all duration-1000 ${
-                  isOpening ? 'rotate-12 text-amber-100' : ''
-                }`} />
+      {/* Center Content - Split into two sections */}
+      <div className="absolute inset-0 flex flex-col">
+        {/* Top Section - Logo and Chainak title (moved up) */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center text-white z-10 max-w-3xl mx-auto px-6 transform -translate-y-8">
+            {/* Elegant Logo Section */}
+            <div className="mb-8">
+              <div className="relative mb-8">
+                {/* Logo Background Circle - Enhanced with opening animation */}
+                <div className={`w-32 h-32 mx-auto bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-amber-300/30 shadow-2xl transform translate-y-4 transition-all duration-1000 ${
+                  isOpening ? 'scale-110 shadow-amber-400/50' : ''
+                }`}>
+                  <Coffee className={`h-16 w-16 text-amber-200 transition-all duration-1000 ${
+                    isOpening ? 'rotate-12 text-amber-100' : ''
+                  }`} />
+                </div>
               </div>
               
-              {/* Floating Stars - Enhanced animation during opening */}
-              <Star className={`absolute top-2 -right-2 h-6 w-6 text-amber-300 animate-pulse transition-all duration-1000 ${
-                isOpening ? 'scale-125 text-yellow-300' : ''
-              }`} />
-              <Star className={`absolute bottom-2 -left-2 h-4 w-4 text-orange-300 animate-pulse delay-500 transition-all duration-1000 ${
-                isOpening ? 'scale-125 text-yellow-300' : ''
-              }`} />
+              <h1 className={`text-7xl md:text-8xl font-bold bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent transition-all duration-1000 ${
+                isOpening ? 'scale-105' : ''
+              }`} style={{ fontFamily: 'Playfair Display' }}>
+                Chainak
+              </h1>
             </div>
-            
-            <h1 className={`text-7xl md:text-8xl mb-20 font-bold  bg-gradient-to-r from-amber-200 via-yellow-200 to-orange-200 bg-clip-text text-transparent transition-all duration-1000 ${
-              isOpening ? 'scale-105' : ''
-            }`} style={{ fontFamily: 'Playfair Display' }}>
-              Chainak
-            </h1>
-            <p className={`text-2xl md:text-3xl mt-10 text-amber-100 font-light tracking-wide transition-all duration-1000 ${
+          </div>
+        </div>
+
+        {/* Bottom Section - Tagline and Actions (positioned near door handles) */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center text-white z-10 max-w-3xl mx-auto px-6">
+            <p className={`text-2xl md:text-3xl mb-8 text-amber-100 font-light tracking-wide transition-all duration-1000 ${
               isOpening ? 'text-yellow-100' : ''
             }`}>
-                Chaska Chai Ka
+              Chaska Chai Ka
             </p>
-            
-          </div>
 
-          {/* Elegant Time Display */}
-          {/* <div className="mb-4">
-            <div className="inline-flex items-center space-x-3 bg-black/20 backdrop-blur-md px-6 py-3 rounded-2xl border border-amber-300/20">
-              <Clock className="h-6 w-6 text-amber-300" />
-              <span className="text-amber-100 font-medium text-lg">{formatCurrentTime()}</span>
-            </div>
-          </div> */}
-
-          {/* Elegant Status Indicator */}
-          {/* <div className="mb-6">
-            <div className={`inline-flex items-center space-x-4 px-8 py-4 rounded-2xl backdrop-blur-md border-2 ${
-              isOpen 
-                ? 'bg-emerald-500/20 border-emerald-400/50' 
-                : 'bg-red-500/20 border-red-400/50'
-            }`}>
-              <div className={`w-5 h-5 rounded-full ${
-                isOpen ? 'bg-emerald-400 animate-pulse shadow-lg shadow-emerald-400/50' : 'bg-red-400 shadow-lg shadow-red-400/50'
-              }`}></div>
-              <span className={`font-bold text-xl ${
-                isOpen ? 'text-emerald-200' : 'text-red-200'
-              }`}>
-                {isOpen ? 'WE\'RE OPEN!' : 'CURRENTLY CLOSED'}
-              </span>
-            </div>
-          </div> */}
-
-          {/* Elegant Operating Hours Card - Smaller border */}
-          
-
-          {/* Action Section - Moved further up */}
-          {isOpen ? (
-            // When Open - Show Enter Button
-            !isOpening ? (
-              <div className="space-y-4 mb-4">
-                <button
-                  onClick={handleOpen}
-                  className="group bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-12 py-5 rounded-2xl text-xl font-bold hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-amber-500/30 border border-amber-400/30"
-                >
-                  <span className="flex items-center space-x-3">
-                    <span>Welcome To Chainak</span>
-                    <ChevronRight className="h-6 w-6 group-hover:translate-x-1 transition-transform duration-300" />
-                  </span>
-                </button>
-                
-               <p className="text-amber-200/80 text-lg translate-y-[-0.5rem]">
-                
-                </p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center space-y-6 mb-4">
-                <div className="relative">
-                  <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400 border-t-transparent"></div>
-                  <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-pulse"></div>
-                </div>
-                <p className="text-amber-200 text-xl font-semibold">Opening the gates to excellence...</p>
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce delay-100"></div>
-                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200"></div>
-                </div>
-              </div>
-            )
-          ) : (
-            // When Closed - Show Contact Options
-            <div className="space-y-6 mb-4">
-              <div className="bg-black/30 backdrop-blur-md rounded-2xl p-6 border border-red-300/20">
-                <p className="text-red-200 text-xl mb-6 leading-relaxed">
-                  We're currently closed, but you can still reach us for inquiries and advance orders!
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            {/* Action Section */}
+            {isOpen ? (
+              // When Open - Show Enter Button
+              !isOpening ? (
+                <div className="space-y-4 mb-4">
                   <button
-                    onClick={handleCallNow}
-                    className="group bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
+                    onClick={handleOpen}
+                    className="group bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-12 py-5 rounded-2xl text-xl font-bold hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-amber-500/30 border border-amber-400/30"
                   >
-                    <Phone className="h-5 w-5" />
-                    <span>Contact Us</span>
+                    <span className="flex items-center space-x-3">
+                      <span>Welcome To Chainak</span>
+                      <ChevronRight className="h-6 w-6 group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
                   </button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center space-y-6 mb-4">
+                  <div className="relative">
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-amber-400 border-t-transparent"></div>
+                    <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-pulse"></div>
+                  </div>
+                  <p className="text-amber-200 text-xl font-semibold">Opening the gates to excellence...</p>
+                  <div className="flex space-x-2">
+                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-orange-400 rounded-full animate-bounce delay-100"></div>
+                    <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce delay-200"></div>
+                  </div>
+                </div>
+              )
+            ) : (
+              // When Closed - Show Contact Options
+              <div className="space-y-6 mb-4">
+                <div className="bg-black/30 backdrop-blur-md rounded-2xl p-6 border border-red-300/20">
+                  <p className="text-red-200 text-xl mb-6 leading-relaxed">
+                    We're currently closed, but you can still reach us for inquiries and advance orders!
+                  </p>
                   
-                  <div className="bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-amber-300/20 hidden sm:block">
-                    <div className="flex items-center space-x-2 text-amber-200">
-                      <MapPin className="h-5 w-5" />
-                      <span className="font-medium">Johar Town, Lahore</span>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                    <button
+                      onClick={handleCallNow}
+                      className="group bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
+                    >
+                      <Phone className="h-5 w-5" />
+                      <span>Contact Us</span>
+                    </button>
+                    
+                    <div className="bg-black/30 backdrop-blur-sm px-6 py-4 rounded-xl border border-amber-300/20 hidden sm:block">
+                      <div className="flex items-center space-x-2 text-amber-200">
+                        <MapPin className="h-5 w-5" />
+                        <span className="font-medium">Johar Town, Lahore</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="text-amber-300/80 text-base">
-                <p>💡 Bookmark this page and visit us during our operating hours for the full Chainak experience!</p>
+                <div className="text-amber-300/80 text-base">
+                  <p>💡 Bookmark this page and visit us during our operating hours for the full Chainak experience!</p>
+                </div>
               </div>
+            )}
+
+            {/* Elegant Decorative Elements */}
+            <div className="flex justify-center space-x-3">
+              <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
+                isOpening ? 'scale-125' : ''
+              }`}></div>
+              <div className={`w-3 h-3 bg-orange-400 rounded-full animate-bounce delay-100 shadow-lg shadow-orange-400/50 transition-all duration-1000 ${
+                isOpening ? 'scale-125' : ''
+              }`}></div>
+              <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce delay-200 shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
+                isOpening ? 'scale-125' : ''
+              }`}></div>
             </div>
-          )}
-
-          {/* Elegant Decorative Elements */}
-          <div className="flex justify-center space-x-3">
-            <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
-              isOpening ? 'scale-125' : ''
-            }`}></div>
-            <div className={`w-3 h-3 bg-orange-400 rounded-full animate-bounce delay-100 shadow-lg shadow-orange-400/50 transition-all duration-1000 ${
-              isOpening ? 'scale-125' : ''
-            }`}></div>
-            <div className={`w-3 h-3 bg-amber-400 rounded-full animate-bounce delay-200 shadow-lg shadow-amber-400/50 transition-all duration-1000 ${
-              isOpening ? 'scale-125' : ''
-            }`}></div>
           </div>
         </div>
       </div>
