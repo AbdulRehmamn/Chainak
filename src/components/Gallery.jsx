@@ -1,35 +1,81 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Gallery = () => {
+  const [loadedImages, setLoadedImages] = useState(new Set());
+  const [imagesInView, setImagesInView] = useState(new Set());
+  const observerRef = useRef(null);
+
   const images = [
     {
       url: "/images/1.png",
-      alt: "a dark background with a glowing sign,illuminated by warm hanging light bulbs."
+      alt: "a dark background with a glowing sign,illuminated by warm hanging light bulbs.",
+      // Add placeholder for better UX
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
       url: "/images/3.png",
-      alt: "a dimly lit brick wall framed by a wire grid, with a chair and potted plant in the foreground."
+      alt: "a dimly lit brick wall framed by a wire grid, with a chair and potted plant in the foreground.",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
       url: "/images/5.png",
-      alt: "Evening ambiance with string lights and outdoor seating"
+      alt: "Evening ambiance with string lights and outdoor seating",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
       url: "/images/6.png",
-      alt: "Contemporary interior with White lighting and modern decor"
+      alt: "Contemporary interior with White lighting and modern decor",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
       url: "/images/7.png",
-      alt: "indoor scene with a brick wall mural of a guitarist, a potted plant with string lights, and wooden furniture."
+      alt: "indoor scene with a brick wall mural of a guitarist, a potted plant with string lights, and wooden furniture.",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     }
   ];
+
+  // Intersection Observer for lazy loading
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.dataset.index);
+            setImagesInView(prev => new Set([...prev, index]));
+          }
+        });
+      },
+      {
+        rootMargin: '100px', // Start loading 100px before the image comes into view
+        threshold: 0.1
+      }
+    );
+
+    // Observe all image containers
+    const imageContainers = document.querySelectorAll('[data-index]');
+    imageContainers.forEach(container => {
+      observerRef.current?.observe(container);
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, []);
+
+  const handleImageLoad = (index) => {
+    setLoadedImages(prev => new Set([...prev, index]));
+  };
+
+  const handleImageError = (index) => {
+    console.error(`Failed to load image at index ${index}`);
+    // You could set error state here if needed
+  };
 
   const handleInstagramClick = () => {
     window.open('https://www.instagram.com/chainak.lhr/?hl=en', '_blank');
   };
 
   const handleFacebookClick = () => {
-    // You can add Facebook link here if available
     window.open('https://www.facebook.com', '_blank');
   };
 
@@ -49,24 +95,50 @@ const Gallery = () => {
           {images.map((image, index) => (
             <div 
               key={index}
+              data-index={index}
               className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700"
             >
-              <div className="aspect-[4/3] overflow-hidden">
-                <img 
-                  src={image.url} 
-                  alt={image.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <p className="font-semibold text-lg mb-2">{image.alt}</p>
-                  <div className="w-12 h-1 bg-amber-400 rounded-full"></div>
-                </div>
+              <div className="aspect-[4/3] overflow-hidden relative">
+                {/* Placeholder/Loading state */}
+                {!loadedImages.has(index) && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                    <div className="text-gray-400 text-center">
+                      <div className="w-12 h-12 mx-auto mb-2 border-2 border-gray-300 border-t-amber-500 rounded-full animate-spin"></div>
+                      <span className="text-sm">Loading...</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Actual Image - only render when in view */}
+                {imagesInView.has(index) && (
+                  <img 
+                    src={image.url} 
+                    alt={image.alt}
+                    className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ${
+                      loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onLoad={() => handleImageLoad(index)}
+                    onError={() => handleImageError(index)}
+                    loading="lazy" // Native lazy loading as fallback
+                    decoding="async" // Async decoding for better performance
+                  />
+                )}
               </div>
               
-              {/* Decorative corner accent */}
-              <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              {/* Overlay - only show when image is loaded */}
+              {loadedImages.has(index) && (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute bottom-6 left-6 right-6 text-white">
+                    <p className="font-semibold text-lg mb-2">{image.alt}</p>
+                    <div className="w-12 h-1 bg-amber-400 rounded-full"></div>
+                  </div>
+                </div>
+              )}
+              
+              {/* Decorative corner accent - only show when image is loaded */}
+              {loadedImages.has(index) && (
+                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              )}
             </div>
           ))}
         </div>
