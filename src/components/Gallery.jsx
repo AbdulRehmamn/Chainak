@@ -1,149 +1,41 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Gallery = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
-  const [failedImages, setFailedImages] = useState(new Set());
   const [imagesInView, setImagesInView] = useState(new Set());
   const observerRef = useRef(null);
-  const imageRefs = useRef({});
 
   const images = [
     {
-      // Multiple format support with fallbacks
-      sources: {
-        avif: [
-          { src: "/images/1-small.avif", width: 400 },
-          { src: "/images/1-medium.avif", width: 800 },
-          { src: "/images/1-large.avif", width: 1200 }
-        ],
-        webp: [
-          { src: "/images/1-small.webp", width: 400 },
-          { src: "/images/1-medium.webp", width: 800 },
-          { src: "/images/1-large.webp", width: 1200 }
-        ],
-        jpg: [
-          { src: "/images/1-small.jpg", width: 400 },
-          { src: "/images/1-medium.jpg", width: 800 },
-          { src: "/images/1-large.jpg", width: 1200 }
-        ]
-      },
-      fallback: "/images/1.png",
-      alt: "A dark background with a glowing sign, illuminated by warm hanging light bulbs",
-      blurHash: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2Gw0pQ7NjrBgW6SgCl3sPy6kkWh8LgDEgwT0l5F0KKJqgfgvQdEhg1SdRogpHGFIjnTCaLCdYoAWJ3LJUnNqMUGDtlNaDYZAIHwMJvIg1Y9iSQZ6jY6i8OJ1OC2Vg2t/XSKvLQYECj/9k="
+      url: "/images/1.png",
+      alt: "a dark background with a glowing sign,illuminated by warm hanging light bulbs.",
+      // Add placeholder for better UX
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
-      sources: {
-        avif: [
-          { src: "/images/3-small.avif", width: 400 },
-          { src: "/images/3-medium.avif", width: 800 },
-          { src: "/images/3-large.avif", width: 1200 }
-        ],
-        webp: [
-          { src: "/images/3-small.webp", width: 400 },
-          { src: "/images/3-medium.webp", width: 800 },
-          { src: "/images/3-large.webp", width: 1200 }
-        ],
-        jpg: [
-          { src: "/images/3-small.jpg", width: 400 },
-          { src: "/images/3-medium.jpg", width: 800 },
-          { src: "/images/3-large.jpg", width: 1200 }
-        ]
-      },
-      fallback: "/images/3.png",
-      alt: "A dimly lit brick wall framed by a wire grid, with a chair and potted plant in the foreground",
-      blurHash: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2Gw0pQ7NjrBgW6SgCl3sPy6kkWh8LgDEgwT0l5F0KKJqgfgvQdEhg1SdRogpHGFIjnTCaLCdYoAWJ3LJUnNqMUGDtlNaDYZAIHwMJvIg1Y9iSQZ6jY6i8OJ1OC2Vg2t/XSKvLQYECj/9k="
+      url: "/images/3.png",
+      alt: "a dimly lit brick wall framed by a wire grid, with a chair and potted plant in the foreground.",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
-      sources: {
-        avif: [
-          { src: "/images/5-small.avif", width: 400 },
-          { src: "/images/5-medium.avif", width: 800 },
-          { src: "/images/5-large.avif", width: 1200 }
-        ],
-        webp: [
-          { src: "/images/5-small.webp", width: 400 },
-          { src: "/images/5-medium.webp", width: 800 },
-          { src: "/images/5-large.webp", width: 1200 }
-        ],
-        jpg: [
-          { src: "/images/5-small.jpg", width: 400 },
-          { src: "/images/5-medium.jpg", width: 800 },
-          { src: "/images/5-large.jpg", width: 1200 }
-        ]
-      },
-      fallback: "/images/5.png",
+      url: "/images/5.png",
       alt: "Evening ambiance with string lights and outdoor seating",
-      blurHash: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2Gw0pQ7NjrBgW6SgCl3sPy6kkWh8LgDEgwT0l5F0KKJqgfgvQdEhg1SdRogpHGFIjnTCaLCdYoAWJ3LJUnNqMUGDtlNaDYZAIHwMJvIg1Y9iSQZ6jY6i8OJ1OC2Vg2t/XSKvLQYECj/9k="
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
-      sources: {
-        avif: [
-          { src: "/images/6-small.avif", width: 400 },
-          { src: "/images/6-medium.avif", width: 800 },
-          { src: "/images/6-large.avif", width: 1200 }
-        ],
-        webp: [
-          { src: "/images/6-small.webp", width: 400 },
-          { src: "/images/6-medium.webp", width: 800 },
-          { src: "/images/6-large.webp", width: 1200 }
-        ],
-        jpg: [
-          { src: "/images/6-small.jpg", width: 400 },
-          { src: "/images/6-medium.jpg", width: 800 },
-          { src: "/images/6-large.jpg", width: 1200 }
-        ]
-      },
-      fallback: "/images/6.png",
-      alt: "Contemporary interior with white lighting and modern decor",
-      blurHash: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2Gw0pQ7NjrBgW6SgCl3sPy6kkWh8LgDEgwT0l5F0KKJqgfgvQdEhg1SdRogpHGFIjnTCaLCdYoAWJ3LJUnNqMUGDtlNaDYZAIHwMJvIg1Y9iSQZ6jY6i8OJ1OC2Vg2t/XSKvLQYECj/9k="
+      url: "/images/6.png",
+      alt: "Contemporary interior with White lighting and modern decor",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     },
     {
-      sources: {
-        avif: [
-          { src: "/images/7-small.avif", width: 400 },
-          { src: "/images/7-medium.avif", width: 800 },
-          { src: "/images/7-large.avif", width: 1200 }
-        ],
-        webp: [
-          { src: "/images/7-small.webp", width: 400 },
-          { src: "/images/7-medium.webp", width: 800 },
-          { src: "/images/7-large.webp", width: 1200 }
-        ],
-        jpg: [
-          { src: "/images/7-small.jpg", width: 400 },
-          { src: "/images/7-medium.jpg", width: 800 },
-          { src: "/images/7-large.jpg", width: 1200 }
-        ]
-      },
-      fallback: "/images/7.png",
-      alt: "Indoor scene with a brick wall mural of a guitarist, a potted plant with string lights, and wooden furniture",
-      blurHash: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyLli2Gw0pQ7NjrBgW6SgCl3sPy6kkWh8LgDEgwT0l5F0KKJqgfgvQdEhg1SdRogpHGFIjnTCaLCdYoAWJ3LJUnNqMUGDtlNaDYZAIHwMJvIg1Y9iSQZ6jY6i8OJ1OC2Vg2t/XSKvLQYECj/9k="
+      url: "/images/7.png",
+      alt: "indoor scene with a brick wall mural of a guitarist, a potted plant with string lights, and wooden furniture.",
+      placeholder: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlDQTNBRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+"
     }
   ];
 
-  // Preload critical images (first two)
+  // Intersection Observer for lazy loading
   useEffect(() => {
-    const preloadCriticalImages = () => {
-      images.slice(0, 2).forEach((image, index) => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = image.fallback;
-        link.onload = () => handleImageLoad(index);
-        document.head.appendChild(link);
-      });
-    };
-
-    preloadCriticalImages();
-  }, []);
-
-  // Enhanced Intersection Observer with adaptive loading
-  useEffect(() => {
-    const isSlowConnection = navigator.connection && 
-      (navigator.connection.effectiveType === 'slow-2g' || 
-       navigator.connection.effectiveType === '2g' ||
-       navigator.connection.saveData);
-
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -154,11 +46,12 @@ const Gallery = () => {
         });
       },
       {
-        rootMargin: isSlowConnection ? '50px' : '200px', // Smaller margin for slow connections
+        rootMargin: '100px', // Start loading 100px before the image comes into view
         threshold: 0.1
       }
     );
 
+    // Observe all image containers
     const imageContainers = document.querySelectorAll('[data-index]');
     imageContainers.forEach(container => {
       observerRef.current?.observe(container);
@@ -169,88 +62,13 @@ const Gallery = () => {
     };
   }, []);
 
-  const handleImageLoad = useCallback((index) => {
+  const handleImageLoad = (index) => {
     setLoadedImages(prev => new Set([...prev, index]));
-  }, []);
+  };
 
-  const handleImageError = useCallback((index) => {
-    setFailedImages(prev => new Set([...prev, index]));
+  const handleImageError = (index) => {
     console.error(`Failed to load image at index ${index}`);
-  }, []);
-
-  // Generate srcSet string for responsive images
-  const generateSrcSet = (sources, format) => {
-    return sources[format]?.map(source => `${source.src} ${source.width}w`).join(', ') || '';
-  };
-
-  // Adaptive image quality based on connection
-  const getImageFormat = () => {
-    const isSlowConnection = navigator.connection && 
-      (navigator.connection.effectiveType === 'slow-2g' || 
-       navigator.connection.effectiveType === '2g');
-    
-    if (isSlowConnection) return 'jpg'; // Use smaller JPGs for slow connections
-    
-    // Check browser support for modern formats
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Check AVIF support
-    if (canvas.toDataURL('image/avif').indexOf('data:image/avif') === 0) {
-      return 'avif';
-    }
-    
-    // Check WebP support
-    if (canvas.toDataURL('image/webp').indexOf('data:image/webp') === 0) {
-      return 'webp';
-    }
-    
-    return 'jpg';
-  };
-
-  const OptimizedImage = ({ image, index }) => {
-    const format = getImageFormat();
-    const sources = image.sources;
-    
-    return (
-      <picture className="w-full h-full">
-        {/* AVIF sources (best compression) */}
-        <source
-          srcSet={generateSrcSet(sources, 'avif')}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-          type="image/avif"
-        />
-        
-        {/* WebP sources (good compression, wide support) */}
-        <source
-          srcSet={generateSrcSet(sources, 'webp')}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-          type="image/webp"
-        />
-        
-        {/* JPEG sources (fallback) */}
-        <source
-          srcSet={generateSrcSet(sources, 'jpg')}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-          type="image/jpeg"
-        />
-        
-        {/* Final fallback */}
-        <img
-          ref={el => imageRefs.current[index] = el}
-          src={image.fallback}
-          alt={image.alt}
-          className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ${
-            loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
-          }`}
-          onLoad={() => handleImageLoad(index)}
-          onError={() => handleImageError(index)}
-          loading={index < 2 ? 'eager' : 'lazy'} // Eager load first 2 images
-          decoding="async"
-          fetchPriority={index < 2 ? 'high' : 'low'}
-        />
-      </picture>
-    );
+    // You could set error state here if needed
   };
 
   const handleInstagramClick = () => {
@@ -281,39 +99,29 @@ const Gallery = () => {
               className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700"
             >
               <div className="aspect-[4/3] overflow-hidden relative">
-                {/* BlurHash placeholder */}
-                {!loadedImages.has(index) && !failedImages.has(index) && (
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
-                    style={{ 
-                      backgroundImage: `url(${image.blurHash})`,
-                      transition: 'opacity 0.3s ease'
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-gray-100/80 flex items-center justify-center">
-                      <div className="text-gray-400 text-center">
-                        <div className="w-12 h-12 mx-auto mb-2 border-2 border-gray-300 border-t-amber-500 rounded-full animate-spin"></div>
-                        <span className="text-sm font-medium">Loading...</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Failed loading state */}
-                {failedImages.has(index) && (
-                  <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                {/* Placeholder/Loading state */}
+                {!loadedImages.has(index) && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
                     <div className="text-gray-400 text-center">
-                      <svg className="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                      <span className="text-sm">Failed to load</span>
+                      <div className="w-12 h-12 mx-auto mb-2 border-2 border-gray-300 border-t-amber-500 rounded-full animate-spin"></div>
+                      <span className="text-sm">Loading...</span>
                     </div>
                   </div>
                 )}
                 
-                {/* Optimized Image */}
-                {imagesInView.has(index) && !failedImages.has(index) && (
-                  <OptimizedImage image={image} index={index} />
+                {/* Actual Image - only render when in view */}
+                {imagesInView.has(index) && (
+                  <img 
+                    src={image.url} 
+                    alt={image.alt}
+                    className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ${
+                      loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onLoad={() => handleImageLoad(index)}
+                    onError={() => handleImageError(index)}
+                    loading="lazy" // Native lazy loading as fallback
+                    decoding="async" // Async decoding for better performance
+                  />
                 )}
               </div>
               
@@ -327,7 +135,7 @@ const Gallery = () => {
                 </div>
               )}
               
-              {/* Decorative corner accent */}
+              {/* Decorative corner accent - only show when image is loaded */}
               {loadedImages.has(index) && (
                 <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               )}
